@@ -1,0 +1,835 @@
+🔥 Stack & Queue Problems - WITHOUT Collection Framework
+________________________________________
+📚 Stack Q5. Balanced Parentheses Problem
+✅ Solution 1: Using Array-Based Stack (Manual Implementation)
+java
+import java.util.Scanner;
+
+class MyStack {
+    private char[] arr;
+    private int top;
+    private int capacity;
+    
+    MyStack(int size) {
+        capacity = size;
+        arr = new char[capacity];
+        top = -1;
+    }
+    
+    void push(char ch) {
+        if (top == capacity - 1) {
+            System.out.println("Stack Overflow");
+            return;
+        }
+        arr[++top] = ch;
+    }
+    
+    char pop() {
+        if (top == -1) {
+            return '\0';
+        }
+        return arr[top--];
+    }
+    
+    boolean isEmpty() {
+        return top == -1;
+    }
+}
+
+public class BalancedParentheses_Array {
+    
+    public static boolean isBalanced(String expression) {
+        MyStack stack = new MyStack(expression.length());
+        
+        for (int i = 0; i < expression.length(); i++) {
+            char ch = expression.charAt(i);
+            
+            // If opening bracket, push to stack
+            if (ch == '(' || ch == '{' || ch == '[') {
+                stack.push(ch);
+            }
+            // If closing bracket
+            else if (ch == ')' || ch == '}' || ch == ']') {
+                // If stack is empty, no matching opening bracket
+                if (stack.isEmpty()) {
+                    return false;
+                }
+                
+                char top = stack.pop();
+                
+                // Check if brackets match
+                if ((ch == ')' && top != '(') ||
+                    (ch == '}' && top != '{') ||
+                    (ch == ']' && top != '[')) {
+                    return false;
+                }
+            }
+        }
+        
+        // Stack should be empty if balanced
+        return stack.isEmpty();
+    }
+    
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        String expression = sc.nextLine();
+        
+        if (isBalanced(expression)) {
+            System.out.println("Balanced");
+        } else {
+            System.out.println("Not Balanced");
+        }
+        
+        sc.close();
+    }
+}
+________________________________________
+✅ Solution 2: Using LinkedList-Based Stack
+java
+import java.util.Scanner;
+
+class Node {
+    char data;
+    Node next;
+    
+    Node(char data) {
+        this.data = data;
+        this.next = null;
+    }
+}
+
+class MyStack {
+    private Node top;
+    
+    MyStack() {
+        top = null;
+    }
+    
+    void push(char ch) {
+        Node newNode = new Node(ch);
+        newNode.next = top;
+        top = newNode;
+    }
+    
+    char pop() {
+        if (top == null) {
+            return '\0';
+        }
+        char value = top.data;
+        top = top.next;
+        return value;
+    }
+    
+    boolean isEmpty() {
+        return top == null;
+    }
+}
+
+public class BalancedParentheses_LinkedList {
+    
+    public static boolean isBalanced(String expression) {
+        MyStack stack = new MyStack();
+        
+        for (int i = 0; i < expression.length(); i++) {
+            char ch = expression.charAt(i);
+            
+            if (ch == '(' || ch == '{' || ch == '[') {
+                stack.push(ch);
+            }
+            else if (ch == ')' || ch == '}' || ch == ']') {
+                if (stack.isEmpty()) {
+                    return false;
+                }
+                
+                char topChar = stack.pop();
+                
+                if ((ch == ')' && topChar != '(') ||
+                    (ch == '}' && topChar != '{') ||
+                    (ch == ']' && topChar != '[')) {
+                    return false;
+                }
+            }
+        }
+        
+        return stack.isEmpty();
+    }
+    
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        String expression = sc.nextLine();
+        
+        if (isBalanced(expression)) {
+            System.out.println("Balanced");
+        } else {
+            System.out.println("Not Balanced");
+        }
+        
+        sc.close();
+    }
+}
+________________________________________
+________________________________________
+📚 Stack Q6. Evaluate Postfix Expression
+✅ Solution 1: Using Array-Based Stack
+java
+import java.util.Scanner;
+
+class MyStack {
+    private int[] arr;
+    private int top;
+    private int capacity;
+    
+    MyStack(int size) {
+        capacity = size;
+        arr = new int[capacity];
+        top = -1;
+    }
+    
+    void push(int value) {
+        if (top == capacity - 1) {
+            System.out.println("Stack Overflow");
+            return;
+        }
+        arr[++top] = value;
+    }
+    
+    int pop() {
+        if (top == -1) {
+            System.out.println("Stack Underflow");
+            return -1;
+        }
+        return arr[top--];
+    }
+    
+    boolean isEmpty() {
+        return top == -1;
+    }
+}
+
+public class EvaluatePostfix_Array {
+    
+    public static int evaluatePostfix(String expression) {
+        String[] tokens = expression.split(" ");
+        MyStack stack = new MyStack(tokens.length);
+        
+        for (int i = 0; i < tokens.length; i++) {
+            String token = tokens[i];
+            
+            // If token is an operator
+            if (token.equals("+") || token.equals("-") || 
+                token.equals("*") || token.equals("/")) {
+                
+                // Pop two operands
+                int operand2 = stack.pop();
+                int operand1 = stack.pop();
+                
+                // Perform operation
+                int result = 0;
+                if (token.equals("+")) {
+                    result = operand1 + operand2;
+                } else if (token.equals("-")) {
+                    result = operand1 - operand2;
+                } else if (token.equals("*")) {
+                    result = operand1 * operand2;
+                } else if (token.equals("/")) {
+                    result = operand1 / operand2;
+                }
+                
+                // Push result back
+                stack.push(result);
+            } 
+            // If token is a number
+            else {
+                stack.push(Integer.parseInt(token));
+            }
+        }
+        
+        // Final result
+        return stack.pop();
+    }
+    
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        String expression = sc.nextLine();
+        
+        int result = evaluatePostfix(expression);
+        System.out.println(result);
+        
+        sc.close();
+    }
+}
+________________________________________
+✅ Solution 2: Using LinkedList-Based Stack
+java
+import java.util.Scanner;
+
+class Node {
+    int data;
+    Node next;
+    
+    Node(int data) {
+        this.data = data;
+        this.next = null;
+    }
+}
+
+class MyStack {
+    private Node top;
+    
+    MyStack() {
+        top = null;
+    }
+    
+    void push(int value) {
+        Node newNode = new Node(value);
+        newNode.next = top;
+        top = newNode;
+    }
+    
+    int pop() {
+        if (top == null) {
+            System.out.println("Stack Underflow");
+            return -1;
+        }
+        int value = top.data;
+        top = top.next;
+        return value;
+    }
+    
+    boolean isEmpty() {
+        return top == null;
+    }
+}
+
+public class EvaluatePostfix_LinkedList {
+    
+    public static int evaluatePostfix(String expression) {
+        String[] tokens = expression.split(" ");
+        MyStack stack = new MyStack();
+        
+        for (int i = 0; i < tokens.length; i++) {
+            String token = tokens[i];
+            
+            if (token.equals("+") || token.equals("-") || 
+                token.equals("*") || token.equals("/")) {
+                
+                int operand2 = stack.pop();
+                int operand1 = stack.pop();
+                
+                int result = 0;
+                if (token.equals("+")) {
+                    result = operand1 + operand2;
+                } else if (token.equals("-")) {
+                    result = operand1 - operand2;
+                } else if (token.equals("*")) {
+                    result = operand1 * operand2;
+                } else if (token.equals("/")) {
+                    result = operand1 / operand2;
+                }
+                
+                stack.push(result);
+            } else {
+                stack.push(Integer.parseInt(token));
+            }
+        }
+        
+        return stack.pop();
+    }
+    
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        String expression = sc.nextLine();
+        
+        int result = evaluatePostfix(expression);
+        System.out.println(result);
+        
+        sc.close();
+    }
+}
+________________________________________
+________________________________________
+📚 Queue Q7. Implement Circular Queue
+✅ Solution 1: Simple Circular Array-Based Queue
+java
+import java.util.Scanner;
+
+class CircularQueue {
+    private int[] arr;
+    private int front;
+    private int rear;
+    private int capacity;
+    private int size;
+    
+    CircularQueue(int capacity) {
+        this.capacity = capacity;
+        arr = new int[capacity];
+        front = 0;
+        rear = -1;
+        size = 0;
+    }
+    
+    void enqueue(int value) {
+        if (size == capacity) {
+            System.out.println("Queue is Full");
+            return;
+        }
+        rear = (rear + 1) % capacity;
+        arr[rear] = value;
+        size++;
+    }
+    
+    void dequeue() {
+        if (size == 0) {
+            System.out.println("Queue is Empty");
+            return;
+        }
+        front = (front + 1) % capacity;
+        size--;
+    }
+    
+    void display() {
+        if (size == 0) {
+            System.out.println("Queue is Empty");
+            return;
+        }
+        
+        for (int i = 0; i < size; i++) {
+            System.out.print(arr[(front + i) % capacity] + " ");
+        }
+        System.out.println();
+    }
+}
+
+public class CircularQueueMain_Array {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        
+        int n = sc.nextInt();
+        sc.nextLine();
+        
+        CircularQueue queue = new CircularQueue(n);
+        
+        while (true) {
+            String command = sc.next();
+            
+            if (command.equals("STOP")) {
+                break;
+            } else if (command.equals("ENQUEUE")) {
+                int value = sc.nextInt();
+                queue.enqueue(value);
+            } else if (command.equals("DEQUEUE")) {
+                queue.dequeue();
+            } else if (command.equals("DISPLAY")) {
+                queue.display();
+            }
+        }
+        
+        sc.close();
+    }
+}
+________________________________________
+✅ Solution 2: Dynamic Circular Array-Based Queue
+java
+import java.util.Scanner;
+
+class DynamicCircularQueue {
+    private int[] arr;
+    private int front;
+    private int rear;
+    private int size;
+    
+    DynamicCircularQueue() {
+        arr = new int[2];
+        front = 0;
+        rear = -1;
+        size = 0;
+    }
+    
+    void enqueue(int value) {
+        if (size == arr.length) {
+            resize();
+        }
+        rear = (rear + 1) % arr.length;
+        arr[rear] = value;
+        size++;
+    }
+    
+    void resize() {
+        int[] newArr = new int[arr.length * 2];
+        for (int i = 0; i < size; i++) {
+            newArr[i] = arr[(front + i) % arr.length];
+        }
+        arr = newArr;
+        front = 0;
+        rear = size - 1;
+    }
+    
+    void dequeue() {
+        if (size == 0) {
+            System.out.println("Queue is Empty");
+            return;
+        }
+        front = (front + 1) % arr.length;
+        size--;
+    }
+    
+    void display() {
+        if (size == 0) {
+            System.out.println("Queue is Empty");
+            return;
+        }
+        
+        for (int i = 0; i < size; i++) {
+            System.out.print(arr[(front + i) % arr.length] + " ");
+        }
+        System.out.println();
+    }
+}
+
+public class CircularQueueMain_Dynamic {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        
+        int n = sc.nextInt();
+        sc.nextLine();
+        
+        DynamicCircularQueue queue = new DynamicCircularQueue();
+        
+        while (true) {
+            String command = sc.next();
+            
+            if (command.equals("STOP")) {
+                break;
+            } else if (command.equals("ENQUEUE")) {
+                int value = sc.nextInt();
+                queue.enqueue(value);
+            } else if (command.equals("DEQUEUE")) {
+                queue.dequeue();
+            } else if (command.equals("DISPLAY")) {
+                queue.display();
+            }
+        }
+        
+        sc.close();
+    }
+}
+________________________________________
+✅ Solution 3: LinkedList-Based Queue
+java
+import java.util.Scanner;
+
+class Node {
+    int data;
+    Node next;
+    
+    Node(int data) {
+        this.data = data;
+        this.next = null;
+    }
+}
+
+class LinkedQueue {
+    private Node front;
+    private Node rear;
+    
+    LinkedQueue() {
+        front = null;
+        rear = null;
+    }
+    
+    void enqueue(int value) {
+        Node newNode = new Node(value);
+        if (rear == null) {
+            front = rear = newNode;
+            return;
+        }
+        rear.next = newNode;
+        rear = newNode;
+    }
+    
+    void dequeue() {
+        if (front == null) {
+            System.out.println("Queue is Empty");
+            return;
+        }
+        front = front.next;
+        if (front == null) {
+            rear = null;
+        }
+    }
+    
+    void display() {
+        if (front == null) {
+            System.out.println("Queue is Empty");
+            return;
+        }
+        
+        Node temp = front;
+        while (temp != null) {
+            System.out.print(temp.data + " ");
+            temp = temp.next;
+        }
+        System.out.println();
+    }
+}
+
+public class CircularQueueMain_LinkedList {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        
+        int n = sc.nextInt();
+        sc.nextLine();
+        
+        LinkedQueue queue = new LinkedQueue();
+        
+        while (true) {
+            String command = sc.next();
+            
+            if (command.equals("STOP")) {
+                break;
+            } else if (command.equals("ENQUEUE")) {
+                int value = sc.nextInt();
+                queue.enqueue(value);
+            } else if (command.equals("DEQUEUE")) {
+                queue.dequeue();
+            } else if (command.equals("DISPLAY")) {
+                queue.display();
+            }
+        }
+        
+        sc.close();
+    }
+}
+________________________________________
+________________________________________
+📚 Queue Q8. Generate Binary Numbers from 1 to N
+✅ Solution 1: Using Array-Based Circular Queue
+java
+import java.util.Scanner;
+
+class MyQueue {
+    private String[] arr;
+    private int front;
+    private int rear;
+    private int capacity;
+    private int size;
+    
+    MyQueue(int capacity) {
+        this.capacity = capacity;
+        arr = new String[capacity];
+        front = 0;
+        rear = -1;
+        size = 0;
+    }
+    
+    void enqueue(String value) {
+        if (size == capacity) {
+            return;
+        }
+        rear = (rear + 1) % capacity;
+        arr[rear] = value;
+        size++;
+    }
+    
+    String dequeue() {
+        if (size == 0) {
+            return null;
+        }
+        String value = arr[front];
+        front = (front + 1) % capacity;
+        size--;
+        return value;
+    }
+    
+    boolean isEmpty() {
+        return size == 0;
+    }
+}
+
+public class GenerateBinary_Array {
+    
+    public static void generateBinary(int n) {
+        MyQueue queue = new MyQueue(n * 2);
+        
+        queue.enqueue("1");
+        
+        for (int i = 0; i < n; i++) {
+            String current = queue.dequeue();
+            System.out.print(current + " ");
+            
+            queue.enqueue(current + "0");
+            queue.enqueue(current + "1");
+        }
+        
+        System.out.println();
+    }
+    
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        int n = sc.nextInt();
+        
+        generateBinary(n);
+        
+        sc.close();
+    }
+}
+________________________________________
+✅ Solution 2: Using Dynamic Array-Based Queue
+java
+import java.util.Scanner;
+
+class DynamicQueue {
+    private String[] arr;
+    private int front;
+    private int rear;
+    private int size;
+    
+    DynamicQueue() {
+        arr = new String[2];
+        front = 0;
+        rear = -1;
+        size = 0;
+    }
+    
+    void enqueue(String value) {
+        if (size == arr.length) {
+            resize();
+        }
+        rear = (rear + 1) % arr.length;
+        arr[rear] = value;
+        size++;
+    }
+    
+    void resize() {
+        String[] newArr = new String[arr.length * 2];
+        for (int i = 0; i < size; i++) {
+            newArr[i] = arr[(front + i) % arr.length];
+        }
+        arr = newArr;
+        front = 0;
+        rear = size - 1;
+    }
+    
+    String dequeue() {
+        if (size == 0) {
+            return null;
+        }
+        String value = arr[front];
+        front = (front + 1) % arr.length;
+        size--;
+        return value;
+    }
+    
+    boolean isEmpty() {
+        return size == 0;
+    }
+}
+
+public class GenerateBinary_Dynamic {
+    
+    public static void generateBinary(int n) {
+        DynamicQueue queue = new DynamicQueue();
+        
+        queue.enqueue("1");
+        
+        for (int i = 0; i < n; i++) {
+            String current = queue.dequeue();
+            System.out.print(current + " ");
+            
+            queue.enqueue(current + "0");
+            queue.enqueue(current + "1");
+        }
+        
+        System.out.println();
+    }
+    
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        int n = sc.nextInt();
+        
+        generateBinary(n);
+        
+        sc.close();
+    }
+}
+________________________________________
+✅ Solution 3: Using LinkedList-Based Queue
+java
+import java.util.Scanner;
+
+class Node {
+    String data;
+    Node next;
+    
+    Node(String data) {
+        this.data = data;
+        this.next = null;
+    }
+}
+
+class MyQueue {
+    private Node front;
+    private Node rear;
+    
+    MyQueue() {
+        front = null;
+        rear = null;
+    }
+    
+    void enqueue(String value) {
+        Node newNode = new Node(value);
+        if (rear == null) {
+            front = rear = newNode;
+            return;
+        }
+        rear.next = newNode;
+        rear = newNode;
+    }
+    
+    String dequeue() {
+        if (front == null) {
+            return null;
+        }
+        String value = front.data;
+        front = front.next;
+        if (front == null) {
+            rear = null;
+        }
+        return value;
+    }
+    
+    boolean isEmpty() {
+        return front == null;
+    }
+}
+
+public class GenerateBinary_LinkedList {
+    
+    public static void generateBinary(int n) {
+        MyQueue queue = new MyQueue();
+        
+        queue.enqueue("1");
+        
+        for (int i = 0; i < n; i++) {
+            String current = queue.dequeue();
+            System.out.print(current + " ");
+            
+            queue.enqueue(current + "0");
+            queue.enqueue(current + "1");
+        }
+        
+        System.out.println();
+    }
+    
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        int n = sc.nextInt();
+        
+        generateBinary(n);
+        
+        sc.close();
+    }
+}
+
+
+
