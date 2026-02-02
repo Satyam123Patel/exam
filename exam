@@ -1,7 +1,7 @@
-🔥 Stack & Queue Problems - WITHOUT Collection Framework
+Stack & Queue Problems - WITHOUT Collection Framework
 ________________________________________
-📚 Stack Q5. Balanced Parentheses Problem
-✅ Solution 1: Using Array-Based Stack (Manual Implementation)
+ Stack Q5. Balanced Parentheses Problem
+ Solution 1: Using Array-Based Stack (Manual Implementation)
 java
 import java.util.Scanner;
 
@@ -84,7 +84,7 @@ public class BalancedParentheses_Array {
     }
 }
 ________________________________________
-✅ Solution 2: Using LinkedList-Based Stack
+ Solution 2: Using LinkedList-Based Stack
 java
 import java.util.Scanner;
 
@@ -169,8 +169,8 @@ public class BalancedParentheses_LinkedList {
 }
 ________________________________________
 ________________________________________
-📚 Stack Q6. Evaluate Postfix Expression
-✅ Solution 1: Using Array-Based Stack
+ Stack Q6. Evaluate Postfix Expression
+ Solution 1: Using Array-Based Stack
 java
 import java.util.Scanner;
 
@@ -259,7 +259,7 @@ public class EvaluatePostfix_Array {
     }
 }
 ________________________________________
-✅ Solution 2: Using LinkedList-Based Stack
+ Solution 2: Using LinkedList-Based Stack
 java
 import java.util.Scanner;
 
@@ -348,8 +348,8 @@ public class EvaluatePostfix_LinkedList {
 }
 ________________________________________
 ________________________________________
-📚 Queue Q7. Implement Circular Queue
-✅ Solution 1: Simple Circular Array-Based Queue
+ Queue Q7. Implement Circular Queue
+ Solution 1: Simple Circular Array-Based Queue
 java
 import java.util.Scanner;
 
@@ -428,7 +428,7 @@ public class CircularQueueMain_Array {
     }
 }
 ________________________________________
-✅ Solution 2: Dynamic Circular Array-Based Queue
+ Solution 2: Dynamic Circular Array-Based Queue
 java
 import java.util.Scanner;
 
@@ -514,7 +514,7 @@ public class CircularQueueMain_Dynamic {
     }
 }
 ________________________________________
-✅ Solution 3: LinkedList-Based Queue
+Solution 3: LinkedList-Based Queue
 java
 import java.util.Scanner;
 
@@ -602,8 +602,8 @@ public class CircularQueueMain_LinkedList {
 }
 ________________________________________
 ________________________________________
-📚 Queue Q8. Generate Binary Numbers from 1 to N
-✅ Solution 1: Using Array-Based Circular Queue
+ Queue Q8. Generate Binary Numbers from 1 to N
+ Solution 1: Using Array-Based Circular Queue
 java
 import java.util.Scanner;
 
@@ -674,8 +674,8 @@ public class GenerateBinary_Array {
     }
 }
 ________________________________________
-✅ Solution 2: Using Dynamic Array-Based Queue
-java
+ Solution 2: Using Dynamic Array-Based Queue
+
 import java.util.Scanner;
 
 class DynamicQueue {
